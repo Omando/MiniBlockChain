@@ -18,3 +18,16 @@ type  Block struct {
 	PreviousBlockHash	string 	`json:"previous_block_hash"`
 }
 
+type Blocks []Block
+
+type BlockChain struct {
+	Chain        Blocks   `json:"chain"`
+	PendingBids  Bids     `json:"pending_bids"`
+	NetworkNodes []string `json:"network_nodes"`
+}
+
+// BlockData is used in hash calculations
+type BlockData struct {
+	Index string
+	Bids Bids
+}
