@@ -1,5 +1,6 @@
 package bid
 
+// Bid bid information
 type Bid struct {
 	BidderName string `json:"bidder_name"`
 	AuctionId  int    `json:"auction_id"`
@@ -8,7 +9,7 @@ type Bid struct {
 
 type Bids []Bid
 
-// Block Basic structure of the blockchain
+// Block Basic structure of a blockchain block
 type  Block struct {
 	Index 				int 	`json:"index"`
 	Timestamp 			int64	`json:"timestamp"`
@@ -20,10 +21,14 @@ type  Block struct {
 
 type Blocks []Block
 
+type Nodes []string
+
+// Blockchain Basic structure of a blockchain consists of three collections:
+// blocks, pending bids, and available network nodes
 type BlockChain struct {
 	Chain        Blocks   `json:"chain"`
 	PendingBids  Bids     `json:"pending_bids"`
-	NetworkNodes []string `json:"network_nodes"`
+	NetworkNodes Nodes `json:"network_nodes"`
 }
 
 // BlockData is used in hash calculations
