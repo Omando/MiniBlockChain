@@ -4,7 +4,8 @@ https://github.com/gorilla/mux
 to install gorilla/mux:
 $ go get github.com/gorilla/mux
 
-[Type aliases]
+[Code Notes]
+    [Type aliases]
 Note how the use of 'type aliases' simplifies and clarifies code:
 
 type  Block struct { ... }
@@ -16,6 +17,6 @@ type BlockChain struct {
 	...
 }
 
-[Useful code blocks]
+    [Useful code blocks]
 port := os.Args[1]      // getting command line arguments
 
