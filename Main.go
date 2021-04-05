@@ -4,12 +4,17 @@ import (
 	"MiniBlockChain/bid"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"os"
 )
 
 func main() {
 	// Port to listen to
+	if len(os.Args) == 1 {
+		log.Fatal("missing port number!")
+	}
+
 	port := os.Args[1]
 
 	/* The 'handlers' package is a collection of handlers (aka "HTTP middleware") for use with
