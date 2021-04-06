@@ -36,3 +36,8 @@ type BlockData struct {
 	Index string
 	Bids Bids
 }
+
+type Controller struct {
+	blockChain *BlockChain
+	currentNodeUrl string
+}
