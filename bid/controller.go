@@ -17,5 +17,13 @@ func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Reque
 
 }
 
+// RegisterAndBroadcastBid POST /bid/broadcast
+func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
 
+}
+
+// Mine GET /mine
+func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
+
+}
 
