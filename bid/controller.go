@@ -27,3 +27,8 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 
 }
 
+// RegisterNode POST /register-node
+func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Request) {
+
+}
+
