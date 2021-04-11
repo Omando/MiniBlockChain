@@ -32,3 +32,9 @@ func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Requ
 
 }
 
+// RegisterNodesBulk POST /register-nodes-bulk
+func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http.Request) {
+
+}
+
+
