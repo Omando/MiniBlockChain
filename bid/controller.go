@@ -37,4 +37,10 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 
 }
 
+// RegisterAndBroadcastNode POST /register-and-broadcast-node
+func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, request *http.Request) {
+
+}
+
+
 
