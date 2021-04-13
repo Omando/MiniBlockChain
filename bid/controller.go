@@ -42,5 +42,8 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 
 }
 
+// ReceiveNewBlock POST /review-new-block
+func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.Request) {
 
+}
 
