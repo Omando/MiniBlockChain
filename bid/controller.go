@@ -47,3 +47,9 @@ func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.R
 
 }
 
+// Consensus GET /consensus
+func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request) {
+
+}
+
+
