@@ -52,4 +52,10 @@ func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request
 
 }
 
+// GetBidsForAuction GET /auction/{auctionId} retrieves all bids for an auction
+func (c *Controller) GetBetsForMatch(writer http.ResponseWriter, request *http.Request) {
+
+}
+
+
 
