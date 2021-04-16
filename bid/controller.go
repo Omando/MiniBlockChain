@@ -57,5 +57,9 @@ func (c *Controller) GetBetsForMatch(writer http.ResponseWriter, request *http.R
 
 }
 
+// GetBidsForPlayer GET/player/{playerId}
+func (c *Controller) GetBidsForPlayer(writer http.ResponseWriter, request * http.Request) {
+
+}
 
 
