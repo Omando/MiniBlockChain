@@ -1,5 +1,7 @@
 package bid
 
+import "net/http"
+
 // Bid bid information
 type Bid struct {
 	BidderName string `json:"bidder_name"`
@@ -41,3 +43,12 @@ type Controller struct {
 	blockChain *BlockChain
 	currentNodeUrl string
 }
+
+type Route struct {
+	Name string
+	Method string
+	Pattern string
+	Handler http.Handler
+}
+
+type Routes []Route
