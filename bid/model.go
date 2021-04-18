@@ -48,7 +48,7 @@ type Route struct {
 	Name string
 	Method string
 	Pattern string
-	Handler http.Handler
+	HandlerFunc http.HandlerFunc
 }
 
 type Routes []Route
