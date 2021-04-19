@@ -4,6 +4,30 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var controller *Controller = &Controller{
+	blockChain:     &BlockChain{
+		Chain:        Blocks{},
+		PendingBids:  Bids{},
+		NetworkNodes: Nodes{},
+	},
+	currentNodeUrl: "",
+}
+
+var routes []Route = []Route{
+	Route{
+		Name:    "Index",
+		Method:  "GET",
+		Pattern: "/",
+		HandlerFunc: controller.Index,
+	},
+	Route{
+		Name:        "GetBlockChain",
+		Method:      "GET",
+		Pattern:     "/blockchain",
+		HandlerFunc: controller.GetBlockChain,
+	},
+}
+
 func NewRouter(nodeAddress string) *mux.Router {
 
 	/* mux.Router matches incoming requests against a list of registered routes and calls
