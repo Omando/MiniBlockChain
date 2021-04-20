@@ -26,6 +26,18 @@ var routes []Route = []Route{
 		Pattern:     "/blockchain",
 		HandlerFunc: controller.GetBlockChain,
 	},
+	Route{
+		Name:        "RegisterAndBroadcastNode",
+		Method:      "POST",
+		Pattern:     "/register-and-broadcast-node",
+		HandlerFunc: controller.RegisterAndBroadcastNode,
+	},
+	Route{
+		Name:        "RegisterNode",
+		Method:      "POST",
+		Pattern:     "/register-node",
+		HandlerFunc: controller.RegisterNode,
+	},
 }
 
 func NewRouter(nodeAddress string) *mux.Router {
