@@ -44,6 +44,12 @@ var routes []Route = []Route{
 		Pattern:     "/register-nodes-bulk",
 		HandlerFunc: controller.RegisterNodesBulk,
 	},
+	Route{
+		Name:        "RegisterBid",
+		Method:      "POST",
+		Pattern:     "/bid",
+		HandlerFunc: controller.RegisterBid,
+	},
 }
 
 func NewRouter(nodeAddress string) *mux.Router {
