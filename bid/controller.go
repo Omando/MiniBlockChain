@@ -12,18 +12,8 @@ func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Req
 
 }
 
-// RegisterBid POST/bid
-func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Request) {
-
-}
-
-// RegisterAndBroadcastBid POST /bid/broadcast
-func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
-
-}
-
-// Mine GET /mine
-func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
+// RegisterAndBroadcastNode POST /register-and-broadcast-node
+func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, request *http.Request) {
 
 }
 
@@ -37,8 +27,22 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 
 }
 
-// RegisterAndBroadcastNode POST /register-and-broadcast-node
-func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, request *http.Request) {
+// RegisterBid POST/bid
+func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Request) {
+
+}
+
+
+
+
+
+// RegisterAndBroadcastBid POST /bid/broadcast
+func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
+
+}
+
+// Mine GET /mine
+func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 
 }
 
