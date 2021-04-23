@@ -50,6 +50,42 @@ var routes []Route = []Route{
 		Pattern:     "/bid",
 		HandlerFunc: controller.RegisterBid,
 	},
+	Route{
+		Name:        "RegisterAndBroadcastBid",
+		Method:      "POST",
+		Pattern:     "/bid/broadcast",
+		HandlerFunc: controller.RegisterAndBroadcastBid,
+	},
+	Route{
+		Name:        "Mine",
+		Method:      "GET",
+		Pattern:     "/mine",
+		HandlerFunc: controller.Mine,
+	},
+	Route{
+		Name:        "ReceiveNewBlock",
+		Method:      "POST",
+		Pattern:     "/review-new-block",
+		HandlerFunc: controller.ReceiveNewBlock,
+	},
+	Route{
+		Name:        "Consensus",
+		Method:      "GET",
+		Pattern:     "/consensus",
+		HandlerFunc: controller.Consensus,
+	},
+	Route{
+		Name:        "GetBidsForAuction",
+		Method:      "GET",
+		Pattern:     "/auction/{auctionId}",
+		HandlerFunc: controller.GetBidsForAuction,
+	},
+	Route{
+		Name:        "GetBidsForPlayer",
+		Method:      "GET",
+		Pattern:     "/player/{playerId}",
+		HandlerFunc: controller.GetBidsForPlayer,
+	},
 }
 
 func NewRouter(nodeAddress string) *mux.Router {
