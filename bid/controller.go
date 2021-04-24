@@ -32,10 +32,6 @@ func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Reque
 
 }
 
-
-
-
-
 // RegisterAndBroadcastBid POST /bid/broadcast
 func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
 
@@ -50,18 +46,17 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.Request) {
 
 }
-
 // Consensus GET /consensus
 func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request) {
 
 }
 
 // GetBidsForAuction GET /auction/{auctionId} retrieves all bids for an auction
-func (c *Controller) GetBetsForMatch(writer http.ResponseWriter, request *http.Request) {
+func (c *Controller) GetBidsForAuction(writer http.ResponseWriter, request *http.Request) {
 
 }
 
-// GetBidsForPlayer GET/player/{playerId}
+// GetBidsForPlayer GET /player/{playerId}
 func (c *Controller) GetBidsForPlayer(writer http.ResponseWriter, request * http.Request) {
 
 }
