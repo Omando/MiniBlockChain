@@ -39,11 +39,8 @@ type BlockData struct {
 	Bids Bids
 }
 
-type Controller struct {
-	blockChain *BlockChain
-	currentNodeUrl string
-}
-
+// Route struct models the concept of route by specifying  route name, http method,
+// path, and controller api method
 type Route struct {
 	Name string
 	Method string
@@ -52,3 +49,10 @@ type Route struct {
 }
 
 type Routes []Route
+
+// Contoller ccorresponds to a web api controller with methods that
+// handle all available routes
+type Controller struct {
+	blockChain *BlockChain
+	currentNodeUrl string
+}
