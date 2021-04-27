@@ -13,6 +13,7 @@ var controller *Controller = &Controller{
 	currentNodeUrl: "",
 }
 
+// Define all routes (name, http method, path, and controller api)
 var routes []Route = []Route{
 	Route{
 		Name:    "Index",
