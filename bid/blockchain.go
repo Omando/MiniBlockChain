@@ -20,6 +20,8 @@ func (b *BlockChain) GetLastBlock() Block {
 
 }
 
+// HashBlock calculates hash value for the given parameters
+func (b *BlockChain) HashBlock(previousBlockHash string, currentBlockData string, nonce int) string {
 
-
+}
 
