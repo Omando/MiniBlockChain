@@ -25,3 +25,10 @@ func (b *BlockChain) HashBlock(previousBlockHash string, currentBlockData string
 
 }
 
+// ProofOfWork
+func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData string) int {
+
+}
+
+
+
