@@ -30,5 +30,8 @@ func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData str
 
 }
 
-
+// CheckNewBlockHash
+func (b *BlockChain) CheckNewBlockHash(newBlock Block) bool {
+	return
+}
 
