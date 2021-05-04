@@ -35,3 +35,10 @@ func (b *BlockChain) CheckNewBlockHash(newBlock Block) bool {
 	return
 }
 
+// ChainIsValid checks if the entire block chain is valid
+func (b *BlockChain) ChainIsValid() bool {
+
+}
+
+
+
