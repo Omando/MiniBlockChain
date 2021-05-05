@@ -40,5 +40,14 @@ func (b *BlockChain) ChainIsValid() bool {
 
 }
 
+// GetBidsForMatch gets all bids for a specific auction
+func (b* BlockChain) GetBidsForAuction(autionId string) Bids {
+
+}
+
+// GetBidsForPlayer gets all bids for a specific player id
+func (b *BlockChain) GetBidsForPlayer(playerId string) Bids {
+
+}
 
 
