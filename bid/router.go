@@ -2,6 +2,9 @@ package bid
 
 import (
 	"github.com/gorilla/mux"
+	"log"
+	"net/http"
+	"time"
 )
 
 // Instantiate a controller object so that routes can be initialized
@@ -103,12 +106,23 @@ func NewRouter(port string) *mux.Router {
 	var router *mux.Router = mux.NewRouter().StrictSlash(true)
 
 	// Configure the router with all route elements in the routes array. For example, this code:
-	//	router.Methods("GET").Path("/consensus").Name("Consensus").Handler(controller.Consensus)
-	// means that any GET method to /consensus will be routed to contoller.Consensus method
-	// The Name() method allows us to locate a route by its name
+	// router.Methods("GET").Path("/consensus").Handler(controller.Consensus).Name("Consensus")
+	// means that any GET method sent to /consensus will be routed to controller.Consensus method
+	// The Name() method has no effect on the path; it allows us to easily locate a route by its name
 	for _, route := range routes {
 		router.Methods(route.Method).Path(route.Path).Handler(route.HandlerFunc).Name(route.Name)
 	}
+
+	// Add a logging middleware. Recall that http.Handler is an interface that defines a ServerHTTP
+	// method. We return http.HandlerFunc which is a struct that implements the Handler interface
+	router.Use(func(handler http.Handler) http.Handler {
+		return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+			start := time.Now()
+			handler.ServeHTTP(writer, request)
+
+			log.Printf("[%s] [%s] [Ellapsed: %s]", request.Method, request.RequestURI, time.Since(start))
+		})
+	})
 
 	// Return the fully configured router
 	return router
