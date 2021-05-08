@@ -42,9 +42,9 @@ type BlockData struct {
 // Route struct models the concept of route by specifying  route name, http method,
 // path, and controller api method
 type Route struct {
-	Name string
-	Method string
-	Pattern string
+	Name        string
+	Method      string
+	Path        string
 	HandlerFunc http.HandlerFunc
 }
 
