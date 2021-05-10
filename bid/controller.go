@@ -1,6 +1,9 @@
 package bid
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+)
 
 // Index GET/
 func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
@@ -9,7 +12,11 @@ func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
 
 // GetBlockChain GET /blockchain
 func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Request) {
-
+	data, _ := json.Marshal(c.blockChain)
+	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	writer.WriteHeader(http.StatusOK)
+	writer.Write(data)
+	return
 }
 
 // RegisterAndBroadcastNode POST /register-and-broadcast-node
