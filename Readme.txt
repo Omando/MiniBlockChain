@@ -17,6 +17,6 @@ type BlockChain struct {
 	...
 }
 
-    [Useful code blocks]
+[Useful code blocks]
 port := os.Args[1]      // getting command line arguments
 
