@@ -113,7 +113,7 @@ func NewRouter(port string) *mux.Router {
 		router.Methods(route.Method).Path(route.Path).Handler(route.HandlerFunc).Name(route.Name)
 	}
 
-	// Add a logging middleware. Recall that http.Handler is an interface that defines a ServerHTTP
+	// Add a logging middleware. Recall that http.Handler is an interface that defines a ServeHTTP
 	// method. We return http.HandlerFunc which is a struct that implements the Handler interface
 	router.Use(func(handler http.Handler) http.Handler {
 		return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
