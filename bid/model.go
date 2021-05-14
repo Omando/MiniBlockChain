@@ -50,8 +50,7 @@ type Route struct {
 
 type Routes []Route
 
-// Contoller ccorresponds to a web api controller with methods that
-// handle all available routes
+// Controller  corresponds to a web api controller with methods to handle all available routes
 type Controller struct {
 	blockChain *BlockChain
 	currentNodeUrl string
