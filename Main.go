@@ -17,17 +17,17 @@ func main() {
 
 	port := os.Args[1]
 
-	/* The 'handlers' package is a collection of handlers (aka "HTTP middleware") for use with
-	Go's net/http package. The package includes handlers for logging in standardised formats,
-	compressing HTTP responses, validating content types and other useful tools for manipulating
-	requests and responses.
+	/* The 'handlers' package from guerilla is a collection of handlers (aka "HTTP middleware")
+	for use with Go's net/http package. This package includes handlers for logging in standardised
+	formats, compressing HTTP responses, validating content types and other useful tools for
+	manipulating requests and responses.
 
-	AllowedOrigins sets the allowed origins for CORS requests, as used in the
+	handlers.AllowedOrigins sets the allowed origins for CORS requests, as used in the
 	Allow-Access-Control-Origin' HTTP header. Passing in a "*" will allow any domain.
-	AllowedMethods explicitly allow methods in the Access-Control-Allow-Methods header.
+	handles.AllowedMethods explicitly allows methods in the Access-Control-Allow-Methods header.
 
 	Note the following definitions:
-	type CORSOption func(*cors) error
+	type CORSOption func(*cors) error		// CORSOption is a function type
 	type cors struct {
 		h                      http.Handler
 		allowedHeaders         []string
@@ -47,7 +47,7 @@ func main() {
 	var funcHandler func(http.Handler) http.Handler = handlers.CORS(allowedMethods, allowedOrigins)
 
 	// Listen to port defined in port
-	var router *mux.Router = bid.NewRouter(port)
+	var router *mux.Router = bid.NewRouter(port)		// mux.Router implements Handler interface
 	var handler http.Handler = funcHandler(router);
 	http.ListenAndServe(":"+port, handler)
 }
