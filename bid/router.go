@@ -1,3 +1,5 @@
+/* Initialize web api routes where each route defines a path, an http method,
+an API function, and a name (for easy lookup of routes) */
 package bid
 
 import (
@@ -94,8 +96,8 @@ var routes []Route = []Route{
 }
 
 func NewRouter(port string) *mux.Router {
-	// Instantiate a controller object that holds the blockchain and the url of the node on
-	// which this controller  is running
+	// Initialize a controller object that holds the blockchain and the url
+	// of the node on which this controller  is running
 	controller.currentNodeUrl  = "http://localhost" + port
 	controller.blockChain.CreateNewBlock(100, "0", "0")	// genesis block
 
@@ -108,21 +110,38 @@ func NewRouter(port string) *mux.Router {
 	// Configure the router with all route elements in the routes array. For example, this code:
 	// router.Methods("GET").Path("/consensus").Handler(controller.Consensus).Name("Consensus")
 	// means that any GET method sent to /consensus will be routed to controller.Consensus method
-	// The Name() method has no effect on the path; it allows us to easily locate a route by its name
+	// The Name() method has no effect on the path; it allows us to easily locate a route by name
 	for _, route := range routes {
-		router.Methods(route.Method).Path(route.Path).Handler(route.HandlerFunc).Name(route.Name)
+		router.
+			Methods(route.Method).
+			Path(route.Path).
+			Handler(route.HandlerFunc).
+			Name(route.Name)
 	}
 
-	// Add a logging middleware. Recall that http.Handler is an interface that defines a ServeHTTP
-	// method. We return http.HandlerFunc which is a struct that implements the Handler interface
-	router.Use(func(handler http.Handler) http.Handler {
+	// Utilize Router.Use to append logging middleware to the chain of middleware (in this case we only
+	// have the logging middleware). Note the signature for Router.Use:
+	// 	func (r *Router) Use(mwf ...MiddlewareFunc)
+	//  type MiddlewareFunc func(http.Handler) http.Handler
+	// Recall that http.Handler is an interface that defines a ServeHTTP method.
+	// We return http.HandlerFunc which is a struct that implements the Handler interface
+	router.Use( func(handler http.Handler) http.Handler {
 		return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 			start := time.Now()
 			handler.ServeHTTP(writer, request)
-
 			log.Printf("[%s] [%s] [Ellapsed: %s]", request.Method, request.RequestURI, time.Since(start))
 		})
 	})
+
+	/*//type MiddlewareFunc func(http.Handler) http.Handler
+	var loggingHandlerFunc http.HandlerFunc = func(writer http.ResponseWriter, request *http.Request) {
+		start := time.Now()
+		log.Printf("[%s] [%s] [Ellapsed: %s]", request.Method, request.RequestURI, time.Since(start))
+	}
+	var mwLogging mux.MiddlewareFunc = func(handler http.Handler) http.Handler {
+		return loggingHandlerFunc
+	}
+	router.Use( mwLogging )*/
 
 	// Return the fully configured router
 	return router
