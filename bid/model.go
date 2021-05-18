@@ -8,8 +8,10 @@ type Bid struct {
 	AuctionId  int    `json:"auction_id"`
 	BidValue   int    `json:"bid_value"`
 }
-
 type Bids []Bid
+
+// Nodes is an alias for an array of strings where each string is the address of a node
+type Nodes []string
 
 // Block Basic structure of a blockchain block
 type  Block struct {
@@ -20,17 +22,20 @@ type  Block struct {
 	Hash				string	`json:"hash"`
 	PreviousBlockHash	string 	`json:"previous_block_hash"`
 }
-
 type Blocks []Block
 
-type Nodes []string
-
-// Blockchain Basic structure of a blockchain consists of three collections:
+// BlockChain basic structure of a blockchain consists of three collections:
 // blocks, pending bids, and available network nodes
 type BlockChain struct {
-	Chain        Blocks   `json:"chain"`
-	PendingBids  Bids     `json:"pending_bids"`
-	NetworkNodes Nodes `json:"network_nodes"`
+	Chain        Blocks   	`json:"chain"`
+	PendingBids  Bids     	`json:"pending_bids"`
+	NetworkNodes Nodes 		`json:"network_nodes"`
+}
+
+// Controller corresponds to a web api controller with methods to handle all available routes
+type Controller struct {
+	blockChain *BlockChain
+	currentNodeUrl string
 }
 
 // BlockData is used in hash calculations
@@ -39,7 +44,7 @@ type BlockData struct {
 	Bids Bids
 }
 
-// Route struct models the concept of route by specifying  route name, http method,
+// Route struct models the concept of route by specifying route name, http method,
 // path, and controller api method
 type Route struct {
 	Name        string
@@ -49,9 +54,3 @@ type Route struct {
 }
 
 type Routes []Route
-
-// Controller  corresponds to a web api controller with methods to handle all available routes
-type Controller struct {
-	blockChain *BlockChain
-	currentNodeUrl string
-}
