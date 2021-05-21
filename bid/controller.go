@@ -1,3 +1,6 @@
+/* Define all API methods for each available route. These methods are defined on the
+Controller struct. Recall that the Controller struct holds the current node's URL
+and own copy of the blockchain */
 package bid
 
 import (
@@ -5,18 +8,29 @@ import (
 	"net/http"
 )
 
+// GetBlockChain GET /blockchain
+// Retrieves the blockchain in JSON
+func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Request) {
+	// Setup headers
+	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	writer.Header().Set("Access-Control-Allow-Origin", "*")
+	writer.WriteHeader(http.StatusOK)
+
+	// Convert the blockchain into JSON
+	data, _ := json.Marshal(c.blockChain)
+	writer.Write(data)
+	return
+}
+
+// RegisterAndBroadcastBid POST /bid/broadcast
+func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
+	// continue here
+}
+
+
 // Index GET/
 func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
 
-}
-
-// GetBlockChain GET /blockchain
-func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Request) {
-	data, _ := json.Marshal(c.blockChain)
-	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	writer.WriteHeader(http.StatusOK)
-	writer.Write(data)
-	return
 }
 
 // RegisterAndBroadcastNode POST /register-and-broadcast-node
@@ -36,11 +50,6 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 
 // RegisterBid POST/bid
 func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Request) {
-
-}
-
-// RegisterAndBroadcastBid POST /bid/broadcast
-func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
 
 }
 
