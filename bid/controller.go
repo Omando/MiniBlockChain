@@ -23,10 +23,18 @@ func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Req
 }
 
 // RegisterAndBroadcastBid POST /bid/broadcast
+// This route is called by the client to register a bid in current blockchain.
+// The bid is then sent to all nodes in the network
 func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
 	// continue here
 }
 
+// RegisterBid POST/bid
+// After registering a bid in the blockchain, this route is called by the server to register
+// the bid with the other nodes of the network
+func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Request) {
+
+}
 
 // Index GET/
 func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
@@ -45,11 +53,6 @@ func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Requ
 
 // RegisterNodesBulk POST /register-nodes-bulk
 func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http.Request) {
-
-}
-
-// RegisterBid POST/bid
-func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Request) {
 
 }
 
