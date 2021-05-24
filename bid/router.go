@@ -34,6 +34,18 @@ var routes []Route = []Route{
 		HandlerFunc: controller.GetBlockChain,
 	},
 	Route{
+		Name:        "RegisterAndBroadcastBid",
+		Method:      "POST",
+		Path:        "/bid/broadcast",
+		HandlerFunc: controller.RegisterAndBroadcastBid,
+	},
+	Route{
+		Name:        "RegisterBid",
+		Method:      "POST",
+		Path:        "/bid",
+		HandlerFunc: controller.RegisterBid,
+	},
+	Route{
 		Name:        "RegisterAndBroadcastNode",
 		Method:      "POST",
 		Path:        "/register-and-broadcast-node",
@@ -50,18 +62,6 @@ var routes []Route = []Route{
 		Method:      "POST",
 		Path:        "/register-nodes-bulk",
 		HandlerFunc: controller.RegisterNodesBulk,
-	},
-	Route{
-		Name:        "RegisterBid",
-		Method:      "POST",
-		Path:        "/bid",
-		HandlerFunc: controller.RegisterBid,
-	},
-	Route{
-		Name:        "RegisterAndBroadcastBid",
-		Method:      "POST",
-		Path:        "/bid/broadcast",
-		HandlerFunc: controller.RegisterAndBroadcastBid,
 	},
 	Route{
 		Name:        "Mine",
