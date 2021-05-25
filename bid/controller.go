@@ -5,33 +5,72 @@ package bid
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 )
 
 // GetBlockChain GET /blockchain
-// Retrieves the blockchain in JSON
+/* Retrieves the blockchain in JSON format. Typical output looks like this:
+{
+	"chain": [
+		{
+			"index": 1,
+			"timestamp": 1627171722582903400,
+			"bids": [],
+			"nonce": 100,
+			"hash": "0",
+			"previous_block_hash": "0"
+		}
+	],
+	"pending_bids": [],
+	"network_nodes": []
+}
+*/
 func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Request) {
 	// Setup headers
 	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	writer.Header().Set("Access-Control-Allow-Origin", "*")
 	writer.WriteHeader(http.StatusOK)
 
-	// Convert the blockchain into JSON
+	// Get the blockchain from the controller and convert it into JSON
 	data, _ := json.Marshal(c.blockChain)
+	
+	// Send the blockchain back to the client
 	writer.Write(data)
 	return
 }
 
 // RegisterAndBroadcastBid POST /bid/broadcast
-// This route is called by the client to register a bid in current blockchain.
-// The bid is then sent to all nodes in the network
+/* Register a bid in current blockchain and transmit to all nodes in the network. Typical body input
+{
+	"bidder_name": "YD"
+	"auction_id": 100
+	"bid_value": 1.99
+}
+*/
 func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
-	// continue here
+	// Read body from request and check for errors
+	defer request.Body.Close()
+	jsonBid, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// We have bid as json. Parse the bid (in json) and convert into a Bid object
+	var bid Bid
+	err = json.Unmarshal(jsonBid, &bid)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	c.blockChain.PendingBids = append(c.blockChain.PendingBids, bid)
+
 }
 
 // RegisterBid POST/bid
-// After registering a bid in the blockchain, this route is called by the server to register
-// the bid with the other nodes of the network
+/* This API method is called by RegisterAndBroadcastBid which registers an API bid locally
+to transmit this bid to  other nodes of the network */
 func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Request) {
 
 }
