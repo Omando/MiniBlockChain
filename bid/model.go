@@ -4,9 +4,9 @@ import "net/http"
 
 // Bid bid information
 type Bid struct {
-	BidderName string `json:"bidder_name"`
-	AuctionId  int    `json:"auction_id"`
-	BidValue   int    `json:"bid_value"`
+	BidderName string 		`json:"bidder_name"`
+	AuctionId  int    		`json:"auction_id"`
+	BidValue   float32    	`json:"bid_value,string"`	//Note of use string
 }
 type Bids []Bid
 
