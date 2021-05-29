@@ -6,6 +6,7 @@ package bid
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -43,9 +44,9 @@ func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Req
 // RegisterAndBroadcastBid POST /bid/broadcast
 /* Register a bid in current blockchain and transmit to all nodes in the network. Typical body input
 {
-	"bidder_name": "YD"
-	"auction_id": 100
-	"bid_value": 1.99
+	"bidder_name": "YD",
+	"auction_id": 100,
+	"bid_value": "123.45"
 }
 */
 func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
@@ -53,6 +54,7 @@ func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request
 	defer request.Body.Close()
 	jsonBid, err := ioutil.ReadAll(request.Body)
 	if err != nil {
+		log.Printf("RegisterAndBroadcastBid error: %s", err)
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -61,7 +63,8 @@ func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request
 	var bid Bid
 	err = json.Unmarshal(jsonBid, &bid)
 	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
+		log.Printf("RegisterAndBroadcastBid error: %s", err)
+		writer.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
 	c.blockChain.PendingBids = append(c.blockChain.PendingBids, bid)
