@@ -1,6 +1,9 @@
 package bid
 
-import "net/http"
+import (
+	"net/http"
+	"time"
+)
 
 // Bid bid information
 type Bid struct {
@@ -54,3 +57,9 @@ type Route struct {
 }
 
 type Routes []Route
+
+type ApiResponse struct {
+	Name string
+	Status string
+	Time time.Time
+}
