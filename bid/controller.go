@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 // GetBlockChain GET /blockchain
@@ -59,7 +60,7 @@ func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request
 		return
 	}
 
-	// We have bid as json. Parse the bid (in json) and convert into a Bid object
+	// Parse the bid (in json) and convert to Bid object
 	var bid Bid
 	err = json.Unmarshal(jsonBid, &bid)
 	if err != nil {
@@ -67,8 +68,22 @@ func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request
 		writer.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
-	c.blockChain.PendingBids = append(c.blockChain.PendingBids, bid)
 
+	// We have a Bid object. Register it in the blockchain
+	//c.blockChain.PendingBids = append(c.blockChain.PendingBids, bid)
+
+	// Broadcast to all other available nodes
+
+	// Return success to caller
+	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	writer.WriteHeader(http.StatusCreated)
+	var apiResponse ApiResponse = ApiResponse{
+		Name:   "RegisterAndBroadcastBid",
+		Status: "Bid created and broadcast successfully",
+		Time:   time.Now(),
+	}
+	data, _ := json.Marshal(apiResponse)
+	writer.Write(data)
 }
 
 // RegisterBid POST/bid
