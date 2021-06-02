@@ -25,8 +25,8 @@ func (b *BlockChain) CreateNewBlock(nonce int, previousBlockHash string, hash st
 }
 
 // RegisterBid registers a bid in the blockchain
-func (b *BlockChain) RegisterBid(bid Bid) bool {
-	panic("not implemented")
+func (b *BlockChain) RegisterBid(bid Bid) {
+	b.PendingBids = append(b.PendingBids, bid)
 }
 
 // RegisterNode registers a node in the blockchain
