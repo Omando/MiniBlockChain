@@ -70,20 +70,12 @@ func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request
 	}
 
 	// We have a Bid object. Register it in the blockchain
-	//c.blockChain.PendingBids = append(c.blockChain.PendingBids, bid)
+	c.blockChain.RegisterBid(bid)
 
 	// Broadcast to all other available nodes
 
 	// Return success to caller
-	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	writer.WriteHeader(http.StatusCreated)
-	var apiResponse ApiResponse = ApiResponse{
-		Name:   "RegisterAndBroadcastBid",
-		Status: "Bid created and broadcast successfully",
-		Time:   time.Now(),
-	}
-	data, _ := json.Marshal(apiResponse)
-	writer.Write(data)
+	sendResponse(writer, http.StatusCreated, "RegisterAndBroadcastBid", "Bid created and broadcast successfully")
 }
 
 // RegisterBid POST/bid
@@ -137,4 +129,16 @@ func (c *Controller) GetBidsForPlayer(writer http.ResponseWriter, request * http
 
 }
 
+// sendResponse sends a standard response to all controller api method
+func sendResponse(writer http.ResponseWriter, statusCode int, methodName string, message string) {
+	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	writer.WriteHeader(statusCode)
+	var apiResponse ApiResponse = ApiResponse{
+		Name:   methodName,
+		Status: message,
+		Time:   time.Now(),
+	}
+	data, _ := json.Marshal(apiResponse)
+	writer.Write(data)
+}
 
