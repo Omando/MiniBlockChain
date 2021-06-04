@@ -4,6 +4,7 @@ and own copy of the blockchain */
 package bid
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"log"
@@ -53,7 +54,7 @@ func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Req
 func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
 	// Read body from request and check for errors
 	defer request.Body.Close()
-	jsonBid, err := ioutil.ReadAll(request.Body)
+	body, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		log.Printf("RegisterAndBroadcastBid error: %s", err)
 		writer.WriteHeader(http.StatusInternalServerError)
@@ -62,7 +63,7 @@ func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request
 
 	// Parse the bid (in json) and convert to Bid object
 	var bid Bid
-	err = json.Unmarshal(jsonBid, &bid)
+	err = json.Unmarshal(body, &bid)
 	if err != nil {
 		log.Printf("RegisterAndBroadcastBid error: %s", err)
 		writer.WriteHeader(http.StatusUnprocessableEntity)
@@ -73,6 +74,12 @@ func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request
 	c.blockChain.RegisterBid(bid)
 
 	// Broadcast to all other available nodes
+	for _, node := range c.blockChain.NetworkNodes {
+		if node != c.currentNodeUrl {
+			// Call RegisterBid on this node's controller
+			DoPostCall(node+"/bid", body)
+		}
+	}
 
 	// Return success to caller
 	sendResponse(writer, http.StatusCreated, "RegisterAndBroadcastBid", "Bid created and broadcast successfully")
@@ -142,3 +149,25 @@ func sendResponse(writer http.ResponseWriter, statusCode int, methodName string,
 	writer.Write(data)
 }
 
+func DoPostCall(url string, body []byte) error {
+	contentType := "application/json;charset=UTF-8"
+
+	/* A Buffer is a variable-sized buffer of bytes with Read and Write methods.
+	Recall the definition of io.Reader:
+		type Reader interface {
+			Read(p []byte) (n int, err error)
+		}
+	Buffer implements the Reader interface as follows:
+		func (b *Buffer) Read(p []byte) (n int, err error) {...}
+	A Buffer instance can therefore be used as an io.Reader in http.Post
+	*/
+	var buffer *bytes.Buffer = bytes.NewBuffer(body)
+	response, err := http.Post(url, contentType, buffer)
+	if err != nil {
+		log.Printf("Failed to POST call to %s: %s", url,  err)
+		return err
+	}
+
+	response.Body.Close()
+	return nil
+}
