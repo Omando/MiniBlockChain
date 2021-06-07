@@ -56,10 +56,15 @@ func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request
 }
 
 // RegisterBid POST/bid
-/* This API method is called by RegisterAndBroadcastBid which registers an API bid locally
-to transmit this bid to  other nodes of the network */
+/* This API method is called by RegisterAndBroadcastBid which registers an API bid locally. Typical body input:
+{
+	"bidder_name": "YD",
+	"auction_id": 100,
+	"bid_value": "123.45"
+}
+*/
 func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Request) {
-
+	c.registerBidImp(writer, request, false)		// Do not broadcast
 }
 
 // Index GET/
