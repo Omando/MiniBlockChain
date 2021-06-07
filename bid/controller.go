@@ -52,37 +52,7 @@ func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Req
 }
 */
 func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
-	// Read body from request and check for errors
-	defer request.Body.Close()
-	body, err := ioutil.ReadAll(request.Body)
-	if err != nil {
-		log.Printf("RegisterAndBroadcastBid error: %s", err)
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	// Parse the bid (in json) and convert to Bid object
-	var bid Bid
-	err = json.Unmarshal(body, &bid)
-	if err != nil {
-		log.Printf("RegisterAndBroadcastBid error: %s", err)
-		writer.WriteHeader(http.StatusUnprocessableEntity)
-		return
-	}
-
-	// We have a Bid object. Register it in the blockchain
-	c.blockChain.RegisterBid(bid)
-
-	// Broadcast to all other available nodes
-	for _, node := range c.blockChain.NetworkNodes {
-		if node != c.currentNodeUrl {
-			// Call RegisterBid on this node's controller
-			DoPostCall(node+"/bid", body)
-		}
-	}
-
-	// Return success to caller
-	sendResponse(writer, http.StatusCreated, "RegisterAndBroadcastBid", "Bid created and broadcast successfully")
+	c.registerBidImp(writer, request, true)
 }
 
 // RegisterBid POST/bid
@@ -134,6 +104,43 @@ func (c *Controller) GetBidsForAuction(writer http.ResponseWriter, request *http
 // GetBidsForPlayer GET /player/{playerId}
 func (c *Controller) GetBidsForPlayer(writer http.ResponseWriter, request * http.Request) {
 
+}
+
+/* Helpers */
+func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Request, shouldBroadCast bool) {
+	// Read body from request and check for errors
+	defer request.Body.Close()
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		log.Printf("RegisterAndBroadcastBid error: %s", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// Parse the bid (in json) and convert to Bid object
+	var bid Bid
+	err = json.Unmarshal(body, &bid)
+	if err != nil {
+		log.Printf("RegisterAndBroadcastBid error: %s", err)
+		writer.WriteHeader(http.StatusUnprocessableEntity)
+		return
+	}
+
+	// We have a Bid object. Register it in the blockchain
+	c.blockChain.RegisterBid(bid)
+
+	// Broadcast to all other available nodes
+	if shouldBroadCast {
+		for _, node := range c.blockChain.NetworkNodes {
+			if node != c.currentNodeUrl {
+				// Call RegisterBid on this node's controller
+				DoPostCall(node+"/bid", body)
+			}
+		}
+	}
+
+	// Return success to caller
+	sendResponse(writer, http.StatusCreated, "RegisterAndBroadcastBid", "Bid created and broadcast successfully")
 }
 
 // sendResponse sends a standard response to all controller api method
