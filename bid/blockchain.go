@@ -1,6 +1,12 @@
 package bid
 
-import "time"
+import (
+	"crypto/sha256"
+	"encoding/base64"
+	"hash"
+	"strconv"
+	"time"
+)
 
 // CreateNewBlock create new block and appends it to the blockchain
 func (b *BlockChain) CreateNewBlock(nonce int, previousBlockHash string, hash string) Block {
@@ -29,6 +35,32 @@ func (b *BlockChain) RegisterBid(bid Bid) {
 	b.PendingBids = append(b.PendingBids, bid)
 }
 
+// HashBlock calculates hash value for the given parameters
+func (b *BlockChain) HashBlock(previousBlockHash string, currentBlockData string, nonce int) string {
+	var stringToHash string = previousBlockHash + currentBlockData + strconv.Itoa(nonce)
+	var hash hash.Hash = sha256.New()
+	hash.Write([]byte(stringToHash))
+	var hashed string = base64.URLEncoding.EncodeToString(hash.Sum(nil))
+	return hashed
+}
+
+// ProofOfWork
+func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData string) int {
+	// Starting value for nonce
+	nonce := -1
+	inputFormat := ""
+
+	// Increment the nonce until the SHA256 hash of the block data returns a string starting with “0000”
+	for inputFormat != "0000" {
+		nonce = nonce + 1
+		var hashed string = b.HashBlock(previousBlockHash, currentBlockData, nonce)
+		inputFormat = hashed[0:4]
+	}
+
+	return nonce
+}
+
+
 // RegisterNode registers a node in the blockchain
 func (b *BlockChain) RegisterNode(node string) bool {
 	panic("not implemented")
@@ -36,16 +68,6 @@ func (b *BlockChain) RegisterNode(node string) bool {
 
 // GetLastBlock gets last block in the chain
 func (b *BlockChain) GetLastBlock() Block {
-	panic("not implemented")
-}
-
-// HashBlock calculates hash value for the given parameters
-func (b *BlockChain) HashBlock(previousBlockHash string, currentBlockData string, nonce int) string {
-	panic("not implemented")
-}
-
-// ProofOfWork
-func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData string) int {
 	panic("not implemented")
 }
 
