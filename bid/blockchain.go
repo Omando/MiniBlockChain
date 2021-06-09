@@ -37,11 +37,17 @@ func (b *BlockChain) RegisterBid(bid Bid) {
 
 // HashBlock calculates hash value for the given parameters
 func (b *BlockChain) HashBlock(previousBlockHash string, currentBlockData string, nonce int) string {
+	// Construct the string to hash
 	var stringToHash string = previousBlockHash + currentBlockData + strconv.Itoa(nonce)
+
+	// Perform a sha256 hash
 	var hash hash.Hash = sha256.New()
 	hash.Write([]byte(stringToHash))
-	var hashed string = base64.URLEncoding.EncodeToString(hash.Sum(nil))
-	return hashed
+
+	// Shorten the hash by converting it to base 64. Note the use of hash.Sum(nil)
+	// to convert the hash into a byte slice
+	var base64Hash string = base64.URLEncoding.EncodeToString(hash.Sum(nil))
+	return base64Hash
 }
 
 // ProofOfWork
