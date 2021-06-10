@@ -66,14 +66,14 @@ func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData str
 	return nonce
 }
 
+// GetLastBlock gets last block in the chain
+func (b *BlockChain) GetLastBlock() Block {
+	return b.Chain[len(b.Chain)-1]
+}
+
 
 // RegisterNode registers a node in the blockchain
 func (b *BlockChain) RegisterNode(node string) bool {
-	panic("not implemented")
-}
-
-// GetLastBlock gets last block in the chain
-func (b *BlockChain) GetLastBlock() Block {
 	panic("not implemented")
 }
 
