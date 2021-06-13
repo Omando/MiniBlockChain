@@ -42,11 +42,13 @@ func (b *BlockChain) HashBlock(previousBlockHash string, currentBlockData string
 
 	// Perform a sha256 hash. Standard logic to perform a hash:
 	// 	h := sha256.New()
-	//	h.Write([]byte("hello world\n"))
-	//	fmt.Printf("%x", h.Sum(nil))  --> prints: 948904f2f0f479b8f8197694b30184b0d2ed1c1cd2a1ec0fb85d299a192a44
+	//	h.Write([]byte("hello world\n"))  --> The array of bytes represents a very log sequence of 1s and 0s
+	//	fmt.Printf("%x", h.Sum(nil))      --> prints: 948904f2f0f479b8f8197694b30184b0d2ed1c1cd2a1ec0fb85d299a192a44
 	var hash hash.Hash = sha256.New()
 	hash.Write([]byte(stringToHash))
 
+	// The output of sha256 is a binary value (expressed as an array of bytes). Encoding
+	// is used to represent the hash as a string of characters, without increasing the size too much.
 	// Note the use of hash.Sum(nil) to convert the hash into a byte slice as required by EncodeToString
 	var base64Hash string = base64.URLEncoding.EncodeToString(hash.Sum(nil))
 	return base64Hash
