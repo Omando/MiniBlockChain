@@ -27,6 +27,12 @@ type  Block struct {
 }
 type Blocks []Block
 
+// BlockData is used in mining to identify
+type BlockData struct {
+	Index string
+	Bids Bids
+}
+
 // BlockChain basic structure of a blockchain consists of three collections:
 // blocks, pending bids, and available network nodes
 type BlockChain struct {
@@ -39,12 +45,6 @@ type BlockChain struct {
 type Controller struct {
 	blockChain *BlockChain
 	currentNodeUrl string
-}
-
-// BlockData is used in hash calculations
-type BlockData struct {
-	Index string
-	Bids Bids
 }
 
 // Route struct models the concept of route by specifying route name, http method,
