@@ -5,10 +5,12 @@ package bid
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -74,7 +76,20 @@ func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Reque
 // Then a new block is created and added to the chain. Lastly the block is transmitted
 // to all other nodes so that those nodes can add the new block to their blockchain
 func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
-	c.blockChain.GetLastBlock()
+	// Get hash of the last block in the chain
+	var lastBlock Block = c.blockChain.GetLastBlock()
+	var lastBlockHash string = lastBlock.Hash
+
+	// To calculate proof of work, we need two items: the hash of the last block,
+	// and data for the new block in the form of a string. We collect data for
+	// the new block in a BlockData struct. To convert the BlockData value to a
+	// string we first convert it a []byte using json.Marshall and then we use
+	// base64 encoding to get a string representation of the []byte (recall, base64
+	//only contains A–Z, a–z, 0–9, +, / and =)
+	var newBlockData = BlockData{ strconv.Itoa(lastBlock.Index), c.blockChain.PendingBids}
+	var newBlockDataAsBinary , _ = json.Marshal(newBlockData)
+	var newBlockDataAsString  = base64.URLEncoding.EncodeToString(newBlockDataAsBinary)
+
 }
 
 
