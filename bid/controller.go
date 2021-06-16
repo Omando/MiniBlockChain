@@ -90,6 +90,12 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	var newBlockDataAsBinary , _ = json.Marshal(newBlockData)
 	var newBlockDataAsString  = base64.URLEncoding.EncodeToString(newBlockDataAsBinary)
 
+	// We now have both iems requires for proof of work
+	c.blockChain.ProofOfWork(lastBlockHash, newBlockDataAsString)
+
+
+
+
 }
 
 
