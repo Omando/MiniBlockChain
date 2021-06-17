@@ -90,8 +90,14 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	var newBlockDataAsBinary , _ = json.Marshal(newBlockData)
 	var newBlockDataAsString  = base64.URLEncoding.EncodeToString(newBlockDataAsBinary)
 
-	// We now have both iems requires for proof of work
-	c.blockChain.ProofOfWork(lastBlockHash, newBlockDataAsString)
+	// We now have both items requires for proof of work. Run proof of work to get nonce
+	var nonce int =  c.blockChain.ProofOfWork(lastBlockHash, newBlockDataAsString)
+
+	// We also need a hash for the new block
+	var hash =  c.blockChain.HashBlock(lastBlockHash, newBlockDataAsString, nonce)
+
+	// We can now create a new block
+	var newBlock Block =  c.blockChain.CreateNewBlock(nonce, lastBlockHash, hash)
 
 
 
