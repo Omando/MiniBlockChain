@@ -83,7 +83,7 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	// To calculate proof of work, we need two items: the hash of the last block,
 	// and data for the new block in the form of a string. We collect data for
 	// the new block in a BlockData struct. To convert the BlockData value to a
-	// string we first convert it a []byte using json.Marshall and then we use
+	// string we first convert it a []byte using json.Marshal and then we use
 	// base64 encoding to get a string representation of the []byte (recall, base64
 	//only contains A–Z, a–z, 0–9, +, / and =)
 	var newBlockData = BlockData{ strconv.Itoa(lastBlock.Index), c.blockChain.PendingBids}
@@ -99,6 +99,7 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	// We can now create a new block
 	var newBlock Block =  c.blockChain.CreateNewBlock(nonce, lastBlockHash, hash)
 
+	// We have a new block! Broadcast to all nodes
 
 
 
@@ -182,7 +183,7 @@ func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Re
 	sendResponse(writer, http.StatusCreated, "RegisterAndBroadcastBid", "Bid created and broadcast successfully")
 }
 
-// sendResponse sends a standard response to all controller api method
+// sendResponse sends a standard response from all controller api method
 func sendResponse(writer http.ResponseWriter, statusCode int, methodName string, message string) {
 	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	writer.WriteHeader(statusCode)
