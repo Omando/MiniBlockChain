@@ -180,11 +180,11 @@ func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Re
 	}
 
 	// Return success to caller
-	sendResponse(writer, http.StatusCreated, "RegisterAndBroadcastBid", "Bid created and broadcast successfully")
+	sendStandardResponse(writer, http.StatusCreated, "RegisterAndBroadcastBid", "Bid created and broadcast successfully")
 }
 
-// sendResponse sends a standard response from all controller api method
-func sendResponse(writer http.ResponseWriter, statusCode int, methodName string, message string) {
+// sendStandardResponse sends a standard response from all controller api method
+func sendStandardResponse(writer http.ResponseWriter, statusCode int, methodName string, message string) {
 	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	writer.WriteHeader(statusCode)
 	var apiResponse ApiResponse = ApiResponse{
