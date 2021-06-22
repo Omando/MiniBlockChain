@@ -100,8 +100,15 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	var newBlock Block =  c.blockChain.CreateNewBlock(nonce, lastBlockHash, hash)
 
 	// We have a new block! Broadcast to all nodes
+	blockToBroadcast, _ := json.Marshal(newBlock)
+	for _, node := range c.blockChain.NetworkNodes {
+		if node != c.currentNodeUrl {
+			DoPostCall(node + "/receive-new-block", blockToBroadcast)
+		}
+	}
 
-
+	// Let caller know that we've completed mining and broadcasting
+	sendStandardResponse(writer, http.StatusOK, "Mine", "New block mined and broadcast")
 
 }
 
