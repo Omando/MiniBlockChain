@@ -72,7 +72,7 @@ var routes []Route = []Route{
 	Route{
 		Name:        "ReceiveNewBlock",
 		Method:      "POST",
-		Path:        "/review-new-block",
+		Path:        "/receive-new-block",
 		HandlerFunc: controller.ReceiveNewBlock,
 	},
 	Route{
