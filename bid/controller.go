@@ -109,9 +109,12 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 
 	// Let caller know that we've completed mining and broadcasting
 	sendStandardResponse(writer, http.StatusOK, "Mine", "New block mined and broadcast")
-
 }
 
+// ReceiveNewBlock POST /receive-new-block
+func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.Request) {
+
+}
 
 // Index GET/
 func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
@@ -133,11 +136,6 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 
 }
 
-
-// ReceiveNewBlock POST /review-new-block
-func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.Request) {
-
-}
 // Consensus GET /consensus
 func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request) {
 
