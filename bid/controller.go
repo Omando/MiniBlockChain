@@ -113,6 +113,20 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 
 // ReceiveNewBlock POST /receive-new-block
 func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.Request) {
+	// Receive the new block (note the patter: ioUtil.ReadAll followed by json.Unmarshal)
+	defer request.Body.Close()
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		log.Printf("Failed to receive new block: %s", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	var newBlock Block
+	json.Unmarshal(body, &newBlock)
+
+	
+
+
 
 }
 
