@@ -124,10 +124,21 @@ func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.R
 	var newBlock Block
 	json.Unmarshal(body, &newBlock)
 
-	
+	// Process new block
+	var message string
+	var statusCode int
+	if c.blockChain.CheckNewBlockHash(newBlock) {
+		message = "New block received and accepted"
+		statusCode = http.StatusOK
+		c.blockChain.PendingBids = Bids{}
+		c.blockChain.Chain = append(c.blockChain.Chain, newBlock)
+	} else {
+		message = "New block has been rejected"
+		statusCode = http.StatusInternalServerError
+	}
 
-
-
+	// Send response back with the result of receiving this block
+	sendStandardResponse(writer, statusCode, "ReceiveNewBlock", message)
 }
 
 // Index GET/
