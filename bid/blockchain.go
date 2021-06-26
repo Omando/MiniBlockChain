@@ -75,14 +75,14 @@ func (b *BlockChain) GetLastBlock() Block {
 	return b.Chain[len(b.Chain)-1]
 }
 
-
-// RegisterNode registers a node in the blockchain
-func (b *BlockChain) RegisterNode(node string) bool {
+// CheckNewBlockHash
+func (b *BlockChain) CheckNewBlockHash(newBlock Block) bool {
 	panic("not implemented")
 }
 
-// CheckNewBlockHash
-func (b *BlockChain) CheckNewBlockHash(newBlock Block) bool {
+
+// RegisterNode registers a node in the blockchain
+func (b *BlockChain) RegisterNode(node string) bool {
 	panic("not implemented")
 }
 
