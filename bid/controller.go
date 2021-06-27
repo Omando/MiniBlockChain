@@ -113,7 +113,7 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 }
 
 // ReceiveNewBlock POST /receive-new-block
-/* Receivek a new block and validate its hash with chain. If validated, the new block
+/* Receive a new block and validate its hash with chain. If validated, the new block
 is accepted, otherwise it is rejected */
 func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.Request) {
 	// Receive the new block (note the patter: ioUtil.ReadAll followed by json.Unmarshal)
