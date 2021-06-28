@@ -76,10 +76,13 @@ func (b *BlockChain) GetLastBlock() Block {
 }
 
 // CheckNewBlockHash
+// A new candidate block is checked by validating the new block's PreviousBlockHash
+// and Index fields with our copy of the block chain
 func (b *BlockChain) CheckNewBlockHash(newBlock Block) bool {
-	panic("not implemented")
+	var lastBlock Block = b.GetLastBlock()
+	return 	lastBlock.Hash == newBlock.PreviousBlockHash &&
+			lastBlock.Index == newBlock.Index - 1
 }
-
 
 // RegisterNode registers a node in the blockchain
 func (b *BlockChain) RegisterNode(node string) bool {
