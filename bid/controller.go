@@ -144,11 +144,6 @@ func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.R
 	sendStandardResponse(writer, statusCode, "ReceiveNewBlock", message)
 }
 
-// Index GET/
-func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
-
-}
-
 // RegisterAndBroadcastNode POST /register-and-broadcast-node
 func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, request *http.Request) {
 
@@ -156,6 +151,12 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 
 // RegisterNode POST /register-node
 func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Request) {
+
+}
+
+
+// Index GET/
+func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
 
 }
 
