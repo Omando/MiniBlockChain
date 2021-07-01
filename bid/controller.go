@@ -87,7 +87,7 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	// string we first convert it a []byte using json.Marshal and then we use
 	// base64 encoding to get a string representation of the []byte (recall, base64
 	//only contains A–Z, a–z, 0–9, +, / and =)
-	var newBlockData = BlockData{ strconv.Itoa(lastBlock.Index), c.blockChain.PendingBids}
+	var newBlockData BlockData = BlockData{strconv.Itoa(lastBlock.Index), c.blockChain.PendingBids}
 	var newBlockDataAsBinary , _ = json.Marshal(newBlockData)
 	var newBlockDataAsString  = base64.URLEncoding.EncodeToString(newBlockDataAsBinary)
 
@@ -181,6 +181,8 @@ func (c *Controller) GetBidsForPlayer(writer http.ResponseWriter, request * http
 }
 
 /* Helpers */
+// Creates a Bid object from the body and adds the bid to the blockchain. The bid is conditionally
+// broadcast to all other nodes
 func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Request, shouldBroadCast bool) {
 	// Read body from request and check for errors
 	defer request.Body.Close()
