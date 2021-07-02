@@ -182,7 +182,7 @@ func (c *Controller) GetBidsForPlayer(writer http.ResponseWriter, request * http
 
 /* Helpers */
 // Creates a Bid object from the body and adds the bid to the blockchain. The bid is conditionally
-// broadcast to all other nodes
+// broadcast to all other registered nodes
 func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Request, shouldBroadCast bool) {
 	// Read body from request and check for errors
 	defer request.Body.Close()
@@ -219,7 +219,8 @@ func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Re
 	sendStandardResponse(writer, http.StatusCreated, "RegisterAndBroadcastBid", "Bid created and broadcast successfully")
 }
 
-// sendStandardResponse sends a standard response from all controller api method
+// sendStandardResponse sends a standard response from all controller api methods: send a content type,
+// a status, and a ApiResponse object with additional data
 func sendStandardResponse(writer http.ResponseWriter, statusCode int, methodName string, message string) {
 	writer.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	writer.WriteHeader(statusCode)
