@@ -54,13 +54,12 @@ func (c *Controller) GetBlockChain(writer http.ResponseWriter, request *http.Req
 }
 */
 func (c *Controller) RegisterAndBroadcastBid(writer http.ResponseWriter, request *http.Request) {
-	c.registerBidImp(writer, request, true)
+	c.registerBidImp(writer, request, true)		// Broadcast
 }
 
-// RegisterBid POST/bid
-/* This API method is called by RegisterAndBroadcastBid which registers an API bid locally and does
-not transmit it. The use case is that user A registers his bid and then broadcasts his bid to all
-other nodes (users) by calling this function. Typical body input:
+// RegisterBid POST /bid
+/* This method registers an API bid locally but does not transmit it. This happens when a user registers
+a bid and broadcasts the bid to all other nodes (users) by calling RegisterAndBroadcastBid. Typical body input:
 {
 	"bidder_name": "YD",
 	"auction_id": 100,
