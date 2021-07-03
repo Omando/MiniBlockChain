@@ -104,7 +104,7 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	blockToBroadcast, _ := json.Marshal(newBlock)
 	for _, node := range c.blockChain.NetworkNodes {
 		if node != c.currentNodeUrl {
-			DoPostCall(node + "/receive-new-block", blockToBroadcast)
+			doPostCall(node + "/receive-new-block", blockToBroadcast)
 		}
 	}
 
@@ -210,7 +210,7 @@ func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Re
 		for _, node := range c.blockChain.NetworkNodes {
 			if node != c.currentNodeUrl {
 				// Call RegisterBid on this node's controller
-				DoPostCall(node+"/bid", body)
+				doPostCall(node+"/bid", body)
 			}
 		}
 	}
@@ -233,7 +233,9 @@ func sendStandardResponse(writer http.ResponseWriter, statusCode int, methodName
 	writer.Write(data)
 }
 
-func DoPostCall(url string, body []byte) error {
+// Do a post call to the given url. Typically used to inform other nodes of interesting changes
+// such as a new block or a new node
+func doPostCall(url string, body []byte) error {
 	contentType := "application/json;charset=UTF-8"
 
 	/* A Buffer is a variable-sized buffer of bytes with Read and Write methods.
