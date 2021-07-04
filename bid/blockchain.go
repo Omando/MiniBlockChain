@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+// RegisterBid registers a bid in the blockchain
+func (b *BlockChain) RegisterBid(bid Bid) {
+	b.PendingBids = append(b.PendingBids, bid)
+}
+
 // CreateNewBlock create new block and appends it to the blockchain
 func (b *BlockChain) CreateNewBlock(nonce int, previousBlockHash string, hash string) Block {
 
@@ -28,11 +33,6 @@ func (b *BlockChain) CreateNewBlock(nonce int, previousBlockHash string, hash st
 	b.Chain = append(b.Chain, newBlock )
 	
 	return  newBlock
-}
-
-// RegisterBid registers a bid in the blockchain
-func (b *BlockChain) RegisterBid(bid Bid) {
-	b.PendingBids = append(b.PendingBids, bid)
 }
 
 // HashBlock calculates hash value for the given parameters
