@@ -72,11 +72,11 @@ func (c *Controller) RegisterBid(writer http.ResponseWriter, request *http.Reque
 
 // Mine GET /mine
 // Mining works by getting the last block and calling ProofOfWork to find the nonce
-// of thew new block to be added. Once the nonce is found, a new block is created
-//and added to the chain. Lastly the block is transmitted  to all other nodes so
-//that those nodes can add the new block to their blockchain
+// of the new block to be added. Once the nonce is found, a new block is created
+// and added to the chain. Lastly the block is transmitted to all other nodes by
+// calling ReceiveNewBlock on each available node
 func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
-	// Get hash of the last block in the chain
+	// Get hash of the last block in the blockchain
 	var lastBlock Block = c.blockChain.GetLastBlock()
 	var lastBlockHash string = lastBlock.Hash
 
