@@ -80,12 +80,13 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	var lastBlock Block = c.blockChain.GetLastBlock()
 	var lastBlockHash string = lastBlock.Hash
 
-	// To calculate proof of work, we need two items: the hash of the last block,
-	// and data for the new block in the form of a string. We collect data for
-	// the new block in a BlockData struct. To convert the BlockData value to a
-	// string we first convert it a []byte using json.Marshal and then we use
-	// base64 encoding to get a string representation of the []byte (recall, base64
-	//only contains A–Z, a–z, 0–9, +, / and =)
+	// To calculate proof of work, we need two items: the hash of the last block
+	//(we have it above),  and data for the new block in the form of a string.
+	// To collect data for the new block, we create a BlockData struct and then
+	// convert this struct value to a string.
+	// To convert a BlockData struct value to a string, we first convert it a []byte
+	// using json.Marshal and then we use base64 encoding to get a string representation
+	// of the []byte (recall, base64 only contains A–Z, a–z, 0–9, +, / and =)
 	var newBlockData BlockData = BlockData{strconv.Itoa(lastBlock.Index), c.blockChain.PendingBids}
 	var newBlockDataAsBinary , _ = json.Marshal(newBlockData)
 	var newBlockDataAsString  = base64.URLEncoding.EncodeToString(newBlockDataAsBinary)
