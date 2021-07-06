@@ -91,19 +91,18 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	var newBlockDataAsBinary , _ = json.Marshal(newBlockData)
 	var newBlockDataAsString  = base64.URLEncoding.EncodeToString(newBlockDataAsBinary)
 
-	// We now have both items requires for proof of work. Run proof of work to get nonce
+	// We now have both items required for proof of work. Run proof of work to get nonce
 	var nonce int =  c.blockChain.ProofOfWork(lastBlockHash, newBlockDataAsString)
 
-	// We also need a hash for the new block
+	// Now that we have the nonce, to create a new block we also need a hash for the new block
 	var hash =  c.blockChain.HashBlock(lastBlockHash, newBlockDataAsString, nonce)
-
-	// We can now create a new block
 	var newBlock Block =  c.blockChain.CreateNewBlock(nonce, lastBlockHash, hash)
 
-	// We have a new block! Broadcast to all nodes
+	// We have a new block! Broadcast it to all nodes
 	blockToBroadcast, _ := json.Marshal(newBlock)
 	for _, node := range c.blockChain.NetworkNodes {
 		if node != c.currentNodeUrl {
+			// Call ReceiveNewBlock on this node's controller
 			doPostCall(node + "/receive-new-block", blockToBroadcast)
 		}
 	}
@@ -210,7 +209,7 @@ func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Re
 		for _, node := range c.blockChain.NetworkNodes {
 			if node != c.currentNodeUrl {
 				// Call RegisterBid on this node's controller
-				doPostCall(node+"/bid", body)
+				doPostCall(node + "/bid", body)
 			}
 		}
 	}
