@@ -15,8 +15,6 @@ func (b *BlockChain) RegisterBid(bid Bid) {
 
 // CreateNewBlock create new block and appends it to the blockchain
 func (b *BlockChain) CreateNewBlock(nonce int, previousBlockHash string, hash string) Block {
-
-	// Create and initialize a new block
 	newBlock := Block{
 		Index:             len(b.Chain) + 1,	// Length of chain + 1
 		Timestamp:         time.Now().UnixNano(),
@@ -37,7 +35,7 @@ func (b *BlockChain) CreateNewBlock(nonce int, previousBlockHash string, hash st
 
 // HashBlock calculates hash value for the given parameters
 func (b *BlockChain) HashBlock(previousBlockHash string, currentBlockData string, nonce int) string {
-	// Construct the string to hash
+	//  Construct the string to hash from input data
 	var stringToHash string = previousBlockHash + currentBlockData + strconv.Itoa(nonce)
 
 	// Perform a sha256 hash. Standard logic to perform a hash:
