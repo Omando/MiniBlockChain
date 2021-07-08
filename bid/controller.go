@@ -98,14 +98,9 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 	var hash =  c.blockChain.HashBlock(lastBlockHash, newBlockDataAsString, nonce)
 	var newBlock Block =  c.blockChain.CreateNewBlock(nonce, lastBlockHash, hash)
 
-	// We have a new block! Broadcast it to all nodes
+	// We have a new block! Broadcast it to all nodes (call ReceiveNewBlock on all nodes)
 	blockToBroadcast, _ := json.Marshal(newBlock)
-	for _, node := range c.blockChain.NetworkNodes {
-		if node != c.currentNodeUrl {
-			// Call ReceiveNewBlock on this node's controller
-			doPostCall(node + "/receive-new-block", blockToBroadcast)
-		}
-	}
+	c.broadcastToAllNodes("/receive-new-block", blockToBroadcast);
 
 	// Let caller know that we've completed mining and broadcasting
 	sendStandardResponse(writer, http.StatusOK, "Mine", "New block mined and broadcast")
@@ -115,7 +110,7 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 /* Receive a new block and validate its hash with chain. If validated, the new block
 is accepted, otherwise it is rejected */
 func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.Request) {
-	// Receive the new block (note the patter: ioUtil.ReadAll followed by json.Unmarshal)
+	// Receive the new block (note the pattern: ioUtil.ReadAll followed by json.Unmarshal)
 	defer request.Body.Close()
 	body, err := ioutil.ReadAll(request.Body)
 	if err != nil {
@@ -180,6 +175,15 @@ func (c *Controller) GetBidsForPlayer(writer http.ResponseWriter, request * http
 }
 
 /* Helpers */
+func (c *Controller) broadcastToAllNodes(api string, body []byte) {
+	for _, node := range c.blockChain.NetworkNodes {
+		if node != c.currentNodeUrl {
+			doPostCall(node + api, body)
+		}
+	}
+}
+
+
 // Creates a Bid object from the body and adds the bid to the blockchain. The bid is conditionally
 // broadcast to all other registered nodes
 func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Request, shouldBroadCast bool) {
@@ -206,12 +210,7 @@ func (c *Controller) registerBidImp(writer http.ResponseWriter, request *http.Re
 
 	// Broadcast to all other available nodes
 	if shouldBroadCast {
-		for _, node := range c.blockChain.NetworkNodes {
-			if node != c.currentNodeUrl {
-				// Call RegisterBid on this node's controller
-				doPostCall(node + "/bid", body)
-			}
-		}
+		c.broadcastToAllNodes("/bid", body)
 	}
 
 	// Return success to caller
