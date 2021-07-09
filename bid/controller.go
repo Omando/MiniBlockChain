@@ -107,8 +107,7 @@ func (c *Controller) Mine(writer http.ResponseWriter, request *http.Request) {
 }
 
 // ReceiveNewBlock POST /receive-new-block
-/* Receive a new block and validate its hash with chain. If validated, the new block
-is accepted, otherwise it is rejected */
+/* Receive and validate a new block. If validated, the new block is accepted, otherwise it is rejected */
 func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.Request) {
 	// Receive the new block (note the pattern: ioUtil.ReadAll followed by json.Unmarshal)
 	defer request.Body.Close()
@@ -121,19 +120,15 @@ func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.R
 	var newBlock Block
 	json.Unmarshal(body, &newBlock)
 
-	// Process new block
-	var message string
-	var statusCode int
+	// Process new block: if validated, add to the blockchain
+	var message string = "New block has been rejected"
+	var statusCode int = http.StatusInternalServerError
 	if c.blockChain.CheckNewBlockHash(newBlock) {
-		message = "New block received and accepted"
-		statusCode = http.StatusOK
 		c.blockChain.PendingBids = Bids{}
 		c.blockChain.Chain = append(c.blockChain.Chain, newBlock)
-	} else {
-		message = "New block has been rejected"
-		statusCode = http.StatusInternalServerError
+		message = "New block received and accepted"
+		statusCode = http.StatusOK
 	}
-
 	// Send response back with the result of receiving this block
 	sendStandardResponse(writer, statusCode, "ReceiveNewBlock", message)
 }
