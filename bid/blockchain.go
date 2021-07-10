@@ -13,6 +13,11 @@ func (b *BlockChain) RegisterBid(bid Bid) {
 	b.PendingBids = append(b.PendingBids, bid)
 }
 
+// GetLastBlock gets last block in the chain
+func (b *BlockChain) GetLastBlock() Block {
+	return b.Chain[len(b.Chain)-1]
+}
+
 // CreateNewBlock create new block and appends it to the blockchain
 func (b *BlockChain) CreateNewBlock(nonce int, previousBlockHash string, hash string) Block {
 	newBlock := Block{
@@ -68,10 +73,7 @@ func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData str
 	return nonce
 }
 
-// GetLastBlock gets last block in the chain
-func (b *BlockChain) GetLastBlock() Block {
-	return b.Chain[len(b.Chain)-1]
-}
+
 
 // CheckNewBlockHash
 // A new candidate block is checked by validating the new block's PreviousBlockHash
