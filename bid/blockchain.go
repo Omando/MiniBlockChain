@@ -57,7 +57,7 @@ func (b *BlockChain) HashBlock(previousBlockHash string, currentBlockData string
 	return base64Hash
 }
 
-// ProofOfWork
+// ProofOfWork increments a nonce until the hash value starts with a specific string value
 func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData string) int {
 	// Starting value for nonce
 	nonce := -1
@@ -72,8 +72,6 @@ func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData str
 
 	return nonce
 }
-
-
 
 // CheckNewBlockHash
 // A new candidate block is checked by validating the new block's PreviousBlockHash
