@@ -74,8 +74,8 @@ func (b *BlockChain) ProofOfWork (previousBlockHash string, currentBlockData str
 }
 
 // CheckNewBlockHash
-// A new candidate block is checked by validating the new block's PreviousBlockHash
-// and Index fields with our copy of the block chain
+// A new candidate block is validated by checking its PreviousBlockHash and Index fields
+// with our copy of the blockchain
 func (b *BlockChain) CheckNewBlockHash(newBlock Block) bool {
 	var lastBlock Block = b.GetLastBlock()
 	return 	lastBlock.Hash == newBlock.PreviousBlockHash &&
