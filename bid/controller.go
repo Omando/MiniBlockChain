@@ -134,6 +134,14 @@ func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.R
 }
 
 // RegisterAndBroadcastNode POST /register-and-broadcast-node
+/* When a node comes online, it finds the list of available nodes (how?), and for each node
+calls its RegisterAndBroadcastNode passing itself as the new node. This function will add
+the incoming node to its list of known nodes, and then for each node in its list of known
+nodes, calls RegisterNode passing this incoming node. Typical input looks like thid
+	{
+		"newnodeurl":"http://address:port"
+	}
+*/
 func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, request *http.Request) {
 
 }
