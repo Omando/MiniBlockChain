@@ -301,7 +301,10 @@ func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request
 			return
 		}
 
-		
+		// Get length of this chain, and update maximum length if necessary
+
+
+
 
 
 	}
