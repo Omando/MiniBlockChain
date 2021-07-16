@@ -157,6 +157,10 @@ func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Requ
 }
 
 // RegisterNodesBulk POST /register-nodes-bulk
+/* When a new node comes online it calls RegisterAndBroadcastNode passing itself as the new node.
+RegisterAndBroadcastNode will process the request and then it will call RegisterNodesBulk on the
+new node passing all the current nodes of the network to the new node. This ensure that the new
+node knows about all other nodes in the network */
 func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http.Request) {
 
 }
