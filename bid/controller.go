@@ -147,6 +147,9 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 }
 
 // RegisterNode POST /register-node
+/* When a new node comes online it calls RegisterAndBroadcastNode passing itself as the new node.
+This function will add the incoming node to its list of known nodes, and then for each node in
+its list of known nodes, calls RegisterNode passing this incoming node  */
 func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Request) {
 
 }
