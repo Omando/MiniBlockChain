@@ -135,9 +135,11 @@ func (c *Controller) ReceiveNewBlock(writer http.ResponseWriter, request *http.R
 
 // RegisterAndBroadcastNode POST /register-and-broadcast-node
 /* When a node comes online, it finds the list of available nodes (how?), and for each node
-calls its RegisterAndBroadcastNode passing itself as the new node. This function will add
-the incoming node to its list of known nodes, and then for each node in its list of known
-nodes, calls RegisterNode passing this incoming node. Typical input looks like thid
+calls its RegisterAndBroadcastNode passing itself as the new node. This function:
+1. Will add the incoming node to its list of known nodes
+2. For each node in its list of known nodes, calls RegisterNode passing this incoming node.
+3. Calls RegisterNodesBulk passing all the current nodes of the network to the new node
+Typical input looks like this
 	{
 		"newnodeurl":"http://address:port"
 	}
@@ -154,16 +156,16 @@ func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Requ
 
 }
 
+// RegisterNodesBulk POST /register-nodes-bulk
+func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http.Request) {
+
+}
 
 // Index GET/
 func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
 
 }
 
-// RegisterNodesBulk POST /register-nodes-bulk
-func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http.Request) {
-
-}
 
 // Consensus GET /consensus
 func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request) {
