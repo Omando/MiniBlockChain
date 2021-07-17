@@ -141,10 +141,25 @@ calls its RegisterAndBroadcastNode passing itself as the new node. This function
 3. Calls RegisterNodesBulk passing all the current nodes of the network to the new node
 Typical input looks like this
 	{
-		"newnodeurl":"http://address:port"
+		"new_node_url":"http://address:port"
 	}
 */
 func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, request *http.Request) {
+	// Standard pattern: read request body into a []byte, the convert the []byte to an struct value
+	defer request.Body.Close()
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		log.Printf("Failed to register and broad cast node: %s", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+
+
+
+
+
+
 
 }
 
