@@ -164,10 +164,12 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 		return
 	}
 
+	// We now have the value of the new node. Add it to our list of known nodes
+	c.blockChain.RegisterNode(node.NewNodeUrl)
 
+	// Broadcast this node to our list of known nodes
 
-
-
+	// Send the new node our list of known nodes
 
 }
 
