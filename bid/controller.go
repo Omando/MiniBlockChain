@@ -154,7 +154,15 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 		return
 	}
 
-
+	var node struct {
+		NewNodeUrl string `json:"new_node_url"`
+	}
+	err = json.Unmarshal(body, &node)
+	if err != nil {
+		log.Printf("Failed to create new_node_url from body: %v", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 
 
