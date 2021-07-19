@@ -13,6 +13,14 @@ func (b *BlockChain) RegisterBid(bid Bid) {
 	b.PendingBids = append(b.PendingBids, bid)
 }
 
+// RegisterNode registers a node in the blockchain if it does not already exist
+func (b *BlockChain) RegisterNode(node string) bool {
+	// todo: Check if node is not already registered
+
+	b.NetworkNodes = append(b.NetworkNodes, node)
+	return true
+}
+
 // GetLastBlock gets last block in the chain
 func (b *BlockChain) GetLastBlock() Block {
 	return b.Chain[len(b.Chain)-1]
@@ -80,11 +88,6 @@ func (b *BlockChain) CheckNewBlockHash(newBlock Block) bool {
 	var lastBlock Block = b.GetLastBlock()
 	return 	lastBlock.Hash == newBlock.PreviousBlockHash &&
 			lastBlock.Index == newBlock.Index - 1
-}
-
-// RegisterNode registers a node in the blockchain
-func (b *BlockChain) RegisterNode(node string) bool {
-	panic("not implemented")
 }
 
 // ChainIsValid checks if th/e entire block chain is valid
