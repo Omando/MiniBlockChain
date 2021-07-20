@@ -36,9 +36,9 @@ type BlockData struct {
 // BlockChain basic structure of a blockchain consists of three collections:
 // blocks, pending bids, and available network nodes
 type BlockChain struct {
-	Chain        Blocks   	`json:"chain"`
-	PendingBids  Bids     	`json:"pending_bids"`
-	NetworkNodes Nodes 		`json:"network_nodes"`
+	Chain        Blocks   			`json:"chain"`
+	PendingBids  Bids     			`json:"pending_bids"`
+	NetworkNodes map[string]bool 	`json:"network_nodes"`
 }
 
 // Controller corresponds to a web api controller with methods to handle all available routes
