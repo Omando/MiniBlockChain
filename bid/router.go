@@ -14,7 +14,7 @@ var controller *Controller = &Controller{
 	blockChain:     &BlockChain{
 		Chain:        Blocks{},
 		PendingBids:  Bids{},
-		NetworkNodes: Nodes{},
+		NetworkNodes: map[string]bool{},
 	},
 	currentNodeUrl: "",
 }
