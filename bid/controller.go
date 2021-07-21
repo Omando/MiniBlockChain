@@ -165,11 +165,12 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 	}
 
 	// We now have the value of the new node. Add it to our list of known nodes
-	c.blockChain.RegisterNode(node.NewNodeUrl)
+	if c.blockChain.RegisterNode(node.NewNodeUrl) {
+		log.Printf("Node '%v' is already registered. Ignoring request", node.NewNodeUrl)
+		writer.WriteHeader(http.StatusOK)
+		return
+	}
 
-	// Broadcast this node to our list of known nodes
-
-	// Send the new node our list of known nodes
 
 }
 
@@ -184,7 +185,7 @@ func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Requ
 // RegisterNodesBulk POST /register-nodes-bulk
 /* When a new node comes online it calls RegisterAndBroadcastNode passing itself as the new node.
 RegisterAndBroadcastNode will process the request and then it will call RegisterNodesBulk on the
-new node passing all the current nodes of the network to the new node. This ensure that the new
+new node passing all the current nodes of the network to the new node. This ensures that the new
 node knows about all other nodes in the network */
 func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http.Request) {
 
@@ -219,7 +220,6 @@ func (c *Controller) broadcastToAllNodes(api string, body []byte) {
 		}
 	}
 }
-
 
 // Creates a Bid object from the body and adds the bid to the blockchain. The bid is conditionally
 // broadcast to all other registered nodes
