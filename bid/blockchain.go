@@ -15,10 +15,12 @@ func (b *BlockChain) RegisterBid(bid Bid) {
 
 // RegisterNode registers a node in the blockchain if it does not already exist
 func (b *BlockChain) RegisterNode(node string) bool {
-	// todo: Check if node is not already registered
-
-	b.NetworkNodes = append(b.NetworkNodes, node)
-	return true
+	// Add node if it does not exist, else do nothing
+	if !b.NetworkNodes[node] {
+		b.NetworkNodes[node] = true
+		return true		// node added
+	}
+	return false		// node already exists
 }
 
 // GetLastBlock gets last block in the chain
