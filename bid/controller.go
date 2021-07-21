@@ -213,9 +213,9 @@ func (c *Controller) GetBidsForPlayer(writer http.ResponseWriter, request * http
 
 /* Helpers */
 func (c *Controller) broadcastToAllNodes(api string, body []byte) {
-	for _, node := range c.blockChain.NetworkNodes {
-		if node != c.currentNodeUrl {
-			doPostCall(node + api, body)
+	for key, _ := range c.blockChain.NetworkNodes {
+		if key != c.currentNodeUrl {
+			doPostCall(key + api, body)
 		}
 	}
 }
