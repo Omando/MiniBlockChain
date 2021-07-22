@@ -171,6 +171,9 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 		return
 	}
 
+	// Broadcast this node to our list of known nodes
+	c.broadcastToAllNodes("/register-node", body)
+
 
 }
 
