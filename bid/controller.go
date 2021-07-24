@@ -171,18 +171,18 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 		return
 	}
 
-	// Broadcast this node to our list of known nodes
+	// Broadcast this new node to our list of known nodes
 	c.broadcastToAllNodes("/register-node", body)
 
 	// Send our list of known nodes back to the new node
-	nodes := make([]string, len(c.blockChain.NetworkNodes))
+	knownNodes := make([]string, len(c.blockChain.NetworkNodes))
 	i := 0
 	for node ,_ := range c.blockChain.NetworkNodes {
-		nodes[i] = node
+		knownNodes[i] = node
 		i++
 	}
-	nodes[i] = c.currentNodeUrl
-	payload, _ :=  json.Marshal(nodes)
+	knownNodes[i] = c.currentNodeUrl
+	payload, _ :=  json.Marshal(knownNodes)
 	doPostCall("register-nodes-bulk", payload)
 
 	// Send standard response
@@ -194,7 +194,7 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 This function will add the incoming node to its list of known nodes, and then for each node in
 its list of known nodes, calls RegisterNode passing this incoming node  */
 func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Request) {
-
+	// continue here
 }
 
 // RegisterNodesBulk POST /register-nodes-bulk
