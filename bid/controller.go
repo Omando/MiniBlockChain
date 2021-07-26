@@ -155,7 +155,7 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 	}
 
 	var newNode struct {
-		NewNodeUrl string `json:"new_node_url"`
+		url string `json:"new_node_url"`
 	}
 	err = json.Unmarshal(body, &newNode)
 	if err != nil {
@@ -165,8 +165,8 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 	}
 
 	// We now have the value of the new node. Add it to our list of known nodes
-	if c.blockChain.RegisterNode(newNode.NewNodeUrl) {
-		log.Printf("Node '%v' is already registered. Ignoring request", newNode.NewNodeUrl)
+	if c.blockChain.RegisterNode(newNode.url) {
+		log.Printf("Node '%v' is already registered. Ignoring request", newNode.url)
 		writer.WriteHeader(http.StatusOK)
 		return
 	}
