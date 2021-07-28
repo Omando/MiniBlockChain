@@ -63,3 +63,7 @@ type ApiResponse struct {
 	Status string
 	Time time.Time
 }
+
+type NewNode struct {
+	url string `json:"new_node_url"`
+}
