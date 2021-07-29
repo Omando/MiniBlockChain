@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -154,9 +155,7 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 		return
 	}
 
-	var newNode struct {
-		url string `json:"new_node_url"`
-	}
+	var newNode NewNode
 	err = json.Unmarshal(body, &newNode)
 	if err != nil {
 		log.Printf("Failed to create new_node_url from body: %v", err)
@@ -171,10 +170,11 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 		return
 	}
 
-	// Broadcast this new node to our list of known nodes
+	// Broadcast this new node to our list of known nodes (call register-node api point on each
+	// known node passing in body)
 	c.broadcastToAllNodes("/register-node", body)
 
-	// Send our list of known nodes back to the new node
+	// Get a list of our  known nodes and send back to the new node
 	knownNodes := make([]string, len(c.blockChain.NetworkNodes))
 	i := 0
 	for node ,_ := range c.blockChain.NetworkNodes {
@@ -183,7 +183,7 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 	}
 	knownNodes[i] = c.currentNodeUrl
 	payload, _ :=  json.Marshal(knownNodes)
-	doPostCall("register-nodes-bulk", payload)
+	doPostCall( newNode.url + "/register-nodes-bulk", payload)
 
 	// Send standard response
 	sendStandardResponse(writer, http.StatusOK, "RegisterAndBroadcastNode", "Node registered successfully")
@@ -191,10 +191,10 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 
 // RegisterNode POST /register-node
 /* When a new node comes online it calls RegisterAndBroadcastNode passing itself as the new node.
-This function will add the incoming node to its list of known nodes, and then for each node in
-its list of known nodes, calls RegisterNode passing this incoming node  */
+RegisterAndBroadcastNode on the callee adds the incoming node to the callee's list of known nodes,
+and then for each node known to the callee, calls RegisterNode passing this incoming node  */
 func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Request) {
-	// continue here
+
 }
 
 // RegisterNodesBulk POST /register-nodes-bulk
