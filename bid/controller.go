@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -194,6 +193,21 @@ func (c *Controller) RegisterAndBroadcastNode(writer http.ResponseWriter, reques
 RegisterAndBroadcastNode on the callee adds the incoming node to the callee's list of known nodes,
 and then for each node known to the callee, calls RegisterNode passing this incoming node  */
 func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Request) {
+	defer request.Body.Close()
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		log.Printf("Failed to register and broad cast node: %s", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var newNode NewNode
+	err = json.Unmarshal(body, &newNode)
+	if err != nil {
+		log.Printf("Failed to create new_node_url from body: %v", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 }
 
