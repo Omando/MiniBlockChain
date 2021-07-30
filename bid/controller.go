@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -209,6 +210,15 @@ func (c *Controller) RegisterNode(writer http.ResponseWriter, request *http.Requ
 		return
 	}
 
+	isRegistered := c.blockChain.RegisterNode(newNode.url)
+	var statusMessage string
+	if isRegistered {
+		statusMessage = fmt.Sprintf("Node %s was registereded sucessfully", newNode.url)
+	} else {
+		statusMessage = fmt.Sprintf("Node %s is already registered. No action taken", newNode.url)
+	}
+
+	sendStandardResponse(writer, http.StatusOK, "RegisterNode", statusMessage)
 }
 
 // RegisterNodesBulk POST /register-nodes-bulk
