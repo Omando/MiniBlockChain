@@ -227,6 +227,21 @@ RegisterAndBroadcastNode will process the request and then it will call Register
 new node passing all the current nodes of the network to the new node. This ensures that the new
 node knows about all other nodes in the network */
 func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http.Request) {
+	defer request.Body.Close()
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		log.Printf("Failed to register bulk nodes: %s", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var nodes []string
+	err = json.Unmarshal(body, &nodes)
+	if err != nil {
+		log.Printf("Failed to nodes from body: %v", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 }
 
