@@ -243,6 +243,14 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 		return
 	}
 
+	for _, node := range nodes {
+		if node != c.currentNodeUrl {
+			c.blockChain.RegisterNode(node)
+		}
+	}
+
+	sendStandardResponse(writer, http.StatusOK, "RegisterNodesBulk",
+		"Nodes registered successfully")
 }
 
 // Index GET/
