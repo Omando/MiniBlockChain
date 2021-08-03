@@ -255,7 +255,13 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 
 // Consensus GET /consensus
 func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request) {
-	// CONTINUE HERE
+	defer request.Body.Close()
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		log.Printf("Failed to generate conensus: %s", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
 
 // Index GET/
