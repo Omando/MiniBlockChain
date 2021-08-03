@@ -253,14 +253,13 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 		"Nodes registered successfully")
 }
 
-// Index GET/
-func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
-
-}
-
-
 // Consensus GET /consensus
 func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request) {
+	// CONTINUE HERE
+}
+
+// Index GET/
+func (c *Controller) Index(writer http.ResponseWriter, request *http.Request) {
 
 }
 
