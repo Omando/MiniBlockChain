@@ -254,6 +254,8 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 }
 
 // Consensus GET /consensus
+/* Consensus ensures that this node - and then all the network — have the same chains,
+with the same bets.*/
 func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request) {
 	defer request.Body.Close()
 	body, err := ioutil.ReadAll(request.Body)
