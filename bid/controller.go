@@ -255,7 +255,8 @@ func (c *Controller) RegisterNodesBulk(writer http.ResponseWriter, request *http
 
 // Consensus GET /consensus
 /* Consensus ensures that this node - and then all the network — have the same chains,
-with the same bets.*/
+with the same bets: The network which contains the longest chain keeps it, forcing the
+other to drop its chain and get the new one*/
 func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request) {
 	defer request.Body.Close()
 	body, err := ioutil.ReadAll(request.Body)
@@ -264,6 +265,8 @@ func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	
 }
 
 // Index GET/
