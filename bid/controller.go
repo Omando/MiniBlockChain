@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 	"time"
 )
@@ -267,7 +268,24 @@ func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request
 			continue
 		}
 
+		// Call /blockchain on the current node
+		requestUrl, _ := url.Parse(key + "/blockchain")
+		request := &http.Request{
+			Method: "GET",
+			URL:    requestUrl,				// URL *url.URL
+			Header: http.Header{ 			// type Header map[string][]string
+				"Content-Type": {"application/json"},
+			},
+		}
 
+		response, err := http.DefaultClient.Do(request)
+		if err != nil {
+			log.Printf("Failed to call /blocchain on node %s. Error: %s", key, err)
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		defer response.Body.Close()
+		
 
 	}
 }
