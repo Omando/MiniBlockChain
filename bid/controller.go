@@ -285,7 +285,24 @@ func (c *Controller) Consensus(writer http.ResponseWriter, request *http.Request
 			return
 		}
 		defer response.Body.Close()
+
+		// Process response from node which is the node's blockchain
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			log.Printf("Failed to call /blocchain on node %s. Error: %s", key, err)
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		var blockChain *BlockChain
+		err = json.Unmarshal(body, blockChain)
+		if err != nil {
+			log.Printf("Failed to process response from  node %s. Error: %s", key, err)
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		
+
 
 	}
 }
